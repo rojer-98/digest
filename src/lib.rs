@@ -10,12 +10,20 @@ use digest_auth::{AuthContext, AuthorizationHeader, HttpMethod};
 
 #[async_trait]
 pub trait DigestAuth {
-    async fn digest_auth(&self, username: &str, password: &str) -> Result<RequestBuilder, DigestError>;
+    async fn digest_auth(
+        &self,
+        username: &str,
+        password: &str,
+    ) -> Result<RequestBuilder, DigestError>;
 }
 
 #[async_trait]
 impl DigestAuth for RequestBuilder {
-    async fn digest_auth(&self, username: &str, password: &str) -> Result<RequestBuilder, DigestError> {
+    async fn digest_auth(
+        &self,
+        username: &str,
+        password: &str,
+    ) -> Result<RequestBuilder, DigestError> {
         let first_response = clone_request_builder(self)?.send().await?;
         match first_response.status() {
             StatusCode::UNAUTHORIZED => {
